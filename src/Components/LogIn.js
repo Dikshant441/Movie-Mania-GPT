@@ -1,10 +1,44 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { LOGIN_BG_IMG } from "../utils/constant";
+import {
+  fullValidationSignUp,
+  fullValidationSignIn,
+} from "../utils/formValidation";
 
 const LogIn = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const name = useRef(null);
+  const email = useRef(null);
+  const password = useRef(null);
+
+  const handleButtonClick = () => {
+    // what value getting
+    console.log(name.current?.value);
+    console.log(email.current?.value);
+    console.log(password.current?.value);
+
+    // validation logic
+    if (!isSignInForm) {
+      const message = fullValidationSignUp(
+        name.current?.value,
+        email.current?.value,
+        password.current.value
+      );
+      // console.log(message);
+      setErrorMessage(message);
+    } else {
+      const message = fullValidationSignIn(
+        email.current.value,
+        password.current.value
+      );
+      // console.log(message);
+      setErrorMessage(message);
+    }
+  };
 
   const toggleSignInForm = () => {
     setIsSignInForm(!isSignInForm);
@@ -21,7 +55,10 @@ const LogIn = () => {
         className="absolute inset-0 h-full w-full object-cover"
       />
       <div className="absolute mb-0 inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
-        <form className="w-full max-w-md h-auto p-4 mt-16 md:p-12 bg-black rounded-md bg-opacity-50 shadow-lg z-20 mx-4 sm:mx-6 md:mx-8 lg:mx-auto">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="w-full max-w-md h-auto p-4 mt-16 md:p-12 bg-black rounded-md bg-opacity-50 shadow-lg z-20 mx-4 sm:mx-6 md:mx-8 lg:mx-auto"
+        >
           <h1 className="text-white text-4xl md:text-5xl font-bold py-4 md:py-8">
             {isSignInForm ? "Sign In" : "Sign Up"}
           </h1>
@@ -29,29 +66,30 @@ const LogIn = () => {
           <div className="mt-12">
             {!isSignInForm && (
               <input
+                ref={name}
                 type="text"
-                required
                 placeholder="Name"
                 className="p-3 my-4 w-full rounded-md bg-gray-500 border-2 border-solid border-b-orange-600 focus:outline-none focus:border-orange-500 placeholder-white text-lg font-semibold"
               />
             )}
             <input
+              ref={email}
               type="email"
               placeholder="Email Address"
-              required
               className="p-3 my-6 w-full rounded-md bg-gray-500 border-2 border-solid border-b-orange-600 focus:outline-none focus:border-orange-500 placeholder-white text-lg font-semibold "
             />
 
             <input
+              ref={password}
               type="password"
               placeholder="Password"
-              required
               className="p-3 my-6 w-full rounded-md bg-gray-500 border-2 border-solid border-b-orange-600 focus:outline-none focus:border-orange-500 placeholder-white text-lg font-semibold"
             />
 
-            <p className="text-red-500 font-bold">{/* Error message */}</p>
+            <p className="text-red-500 font-bold">{errorMessage}</p>
 
             <button
+              onClick={handleButtonClick}
               type="submit"
               className="text-xl font-bold p-4 my-6 bg-red-600 text-white w-full rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600"
             >

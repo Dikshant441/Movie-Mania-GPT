@@ -6,6 +6,11 @@ import {
   fullValidationSignUp,
   fullValidationSignIn,
 } from "../utils/formValidation";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
 
 const LogIn = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -17,9 +22,9 @@ const LogIn = () => {
 
   const handleButtonClick = () => {
     // what value getting
-    console.log(name.current?.value);
-    console.log(email.current?.value);
-    console.log(password.current?.value);
+    // console.log(name.current.value);
+    // console.log(email.current.value);
+    // console.log(password.current.value);
 
     // validation logic
     if (!isSignInForm) {
@@ -37,6 +42,42 @@ const LogIn = () => {
       );
       // console.log(message);
       setErrorMessage(message);
+    }
+
+    if (!isSignInForm) {
+      // logic for signUp form
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage("User already exist with this email.");
+        });
+    } else {
+      // logic for signIn form
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage("User doesn't exist : Please check Email or Password");
+        });
     }
   };
 

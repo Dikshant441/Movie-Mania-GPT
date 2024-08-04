@@ -1,25 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { APP_LOGO } from "../utils/constant";
 import { USER_PROFILE_LOGO } from "../utils/constant";
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth, signOut ,onAuthStateChanged} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser, removeUser } from "../utils/userSlice";
+import { auth } from "../utils/firebase";
 
 const Header = () => {
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const dispatch = useDispatch();
+
   const handleSignOut = () => {
     const auth = getAuth();
     signOut(auth)
       .then(() => {
-        navigate("/");
       })
       .catch((error) => {
         console.log(error, "Error while signOut");
       });
   };
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const { uid, email, displayName ,photoURL} = user;
+        dispatch(addUser({ uid: uid, email: email, displayName: displayName , photoURL :photoURL }));
+        navigate("/browse")
+      } else {
+        dispatch(removeUser());
+        navigate("/")
+      }
+    });
+  }, []);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);

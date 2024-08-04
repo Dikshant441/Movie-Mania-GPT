@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-import { LOGIN_BG_IMG } from "../utils/constant";
+import { LOGIN_BG_IMG, USER_PROFILE_LOGO } from "../utils/constant";
 import {
   fullValidationSignUp,
   fullValidationSignIn,
@@ -9,14 +9,18 @@ import {
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const LogIn = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const navigate = useNavigate();
+  const dispatch  = useDispatch();
 
   const name = useRef(null);
   const email = useRef(null);
@@ -56,8 +60,27 @@ const LogIn = () => {
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL: USER_PROFILE_LOGO,
+          })
+            .then(() => {
+              // profile updated here
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+              navigate("/browse");
+            })
+            .catch((error) => {
+              setErrorMessage(error.message);
+            });
           console.log(user);
-          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -80,7 +103,9 @@ const LogIn = () => {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          setErrorMessage("User doesn't exist : Please check Email or Password");
+          setErrorMessage(
+            "User doesn't exist : Please check Email or Password"
+          );
         });
     }
   };

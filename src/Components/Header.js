@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { APP_LOGO } from "../utils/constant";
 import { USER_PROFILE_LOGO } from "../utils/constant";
-import { getAuth, signOut ,onAuthStateChanged} from "firebase/auth";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice";
@@ -17,24 +17,32 @@ const Header = () => {
   const handleSignOut = () => {
     const auth = getAuth();
     signOut(auth)
-      .then(() => {
-      })
+      .then(() => {})
       .catch((error) => {
         console.log(error, "Error while signOut");
       });
   };
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        const { uid, email, displayName ,photoURL} = user;
-        dispatch(addUser({ uid: uid, email: email, displayName: displayName , photoURL :photoURL }));
-        navigate("/browse")
+        const { uid, email, displayName, photoURL } = user;
+        dispatch(
+          addUser({
+            uid: uid,
+            email: email,
+            displayName: displayName,
+            photoURL: photoURL,
+          })
+        );
+        navigate("/browse");
       } else {
         dispatch(removeUser());
-        navigate("/")
+        navigate("/");
       }
     });
+// unsubscribe when component unmount
+    return () => unsubscribe();
   }, []);
 
   const toggleDropdown = () => {
@@ -59,7 +67,7 @@ const Header = () => {
             onClick={toggleDropdown}
             className="ml-4 p-2 font-bold text-white text-xl flex items-center"
           >
-           Hi {user?.displayName}
+            Hi {user?.displayName}
             <svg
               className="w-4 h-4 ml-2"
               fill="none"

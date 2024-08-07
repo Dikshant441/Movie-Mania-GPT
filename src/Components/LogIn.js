@@ -19,7 +19,7 @@ const LogIn = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const dispatch  = useDispatch();
+  const dispatch = useDispatch();
 
   const name = useRef(null);
   const email = useRef(null);
@@ -96,7 +96,6 @@ const LogIn = () => {
           // Signed in
           const user = userCredential.user;
           // console.log(user);
-
         })
         .catch((error) => {
           const errorCode = error.code;

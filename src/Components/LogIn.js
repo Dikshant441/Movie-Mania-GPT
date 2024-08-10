@@ -126,7 +126,7 @@ const LogIn = () => {
           onSubmit={(e) => e.preventDefault()}
           className="w-full max-w-md h-auto p-4 mt-16 md:p-12 bg-black rounded-md bg-opacity-50 shadow-lg z-20 mx-4 sm:mx-6 md:mx-8 lg:mx-auto"
         >
-          <h1 className="text-white text-4xl md:text-5xl font-bold py-4 md:py-8">
+          <h1 className="text-white text-3xl md:text-4xl font-semibold py-4">
             {isSignInForm ? "Sign In" : "Sign Up"}
           </h1>
 
@@ -136,21 +136,21 @@ const LogIn = () => {
                 ref={name}
                 type="text"
                 placeholder="Name"
-                className="p-3 my-4 w-full rounded-md bg-gray-500 border-2 border-solid border-b-orange-600 focus:outline-none focus:border-orange-500 placeholder-white text-lg font-semibold"
+                className="p-2 my-4 w-full rounded-md bg-gray-500 border-2 border-solid border-b-orange-600 focus:outline-none focus:border-orange-500 placeholder-white text-lg font-semibold"
               />
             )}
             <input
               ref={email}
               type="email"
               placeholder="Email Address"
-              className="p-3 my-6 w-full rounded-md bg-gray-500 border-2 border-solid border-b-orange-600 focus:outline-none focus:border-orange-500 placeholder-white text-lg font-semibold "
+              className="p-2 my-6 w-full rounded-md bg-gray-500 border-2 border-solid border-b-orange-600 focus:outline-none focus:border-orange-500 placeholder-white text-lg font-semibold "
             />
 
             <input
               ref={password}
               type="password"
               placeholder="Password"
-              className="p-3 my-6 w-full rounded-md bg-gray-500 border-2 border-solid border-b-orange-600 focus:outline-none focus:border-orange-500 placeholder-white text-lg font-semibold"
+              className="p-2 my-6 w-full rounded-md bg-gray-500 border-2 border-solid border-b-orange-600 focus:outline-none focus:border-orange-500 placeholder-white text-lg font-semibold"
             />
 
             <p className="text-red-500 font-bold">{errorMessage}</p>
@@ -158,13 +158,13 @@ const LogIn = () => {
             <button
               onClick={handleButtonClick}
               type="submit"
-              className="text-xl font-bold p-4 my-6 bg-red-600 text-white w-full rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600"
+              className="text-lg font-bold p-2 my-6 bg-red-600 text-white w-full rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600"
             >
               {isSignInForm ? "Sign In" : "Sign Up"}
             </button>
 
             <p
-              className="text-xl text-white text-center cursor-pointer"
+              className="text-lg text-white text-center cursor-pointer"
               onClick={toggleSignInForm}
             >
               {isSignInForm

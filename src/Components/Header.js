@@ -59,13 +59,13 @@ const Header = () => {
       {user && (
         <div className="relative flex items-center">
           <img
-            className="hidden md:block w-12 h-12"
+            className="hidden md:block w-8 h-8"
             alt="usericon"
             src={USER_PROFILE_LOGO}
           />
           <button
             onClick={toggleDropdown}
-            className="ml-4 p-2 font-bold text-white text-xl flex items-center"
+            className="p-2 font-semibold text-white text-md flex items-center"
           >
             Hi {user?.displayName}
             <svg
@@ -84,10 +84,10 @@ const Header = () => {
             </svg>
           </button>
           {isDropdownOpen && (
-            <div className="absolute right-0 mt-20 bg-white border rounded shadow-lg w-36">
+            <div className="absolute right-0 mt-20 bg-white border rounded shadow-lg ">
               <button
                 onClick={handleSignOut}
-                className="flex justify-center items-center w-full p-2 text-lg font-bold text-red-600  hover:bg-gray-100"
+                className="flex justify-center items-center w-full p-2 font-semibold text-red-600  hover:bg-gray-100"
               >
                 Sign Out
               </button>

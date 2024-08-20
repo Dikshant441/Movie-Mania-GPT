@@ -52,14 +52,14 @@ const Header = () => {
   return (
     <div className="absolute flex justify-between top-0 left-0 w-full h-28 bg-opacity-10 p-4 bg-gradient-to-b from-slate-900">
       <img
-        className="w-24 sm:w-44 md:w-40 lg:w-44 xl:w-56"
+        className="w-32 sm:w-40 md:w-40 lg:w-72 xl:w-56"
         src={APP_LOGO}
         alt="logo"
       />
       {user && (
         <div className="relative flex items-center">
           <img
-            className="hidden md:block w-8 h-8"
+            className=" w-8 h-8"
             alt="usericon"
             src={USER_PROFILE_LOGO}
           />
